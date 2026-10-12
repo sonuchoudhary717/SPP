@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Performance Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navigation bar - screen only */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 16px 5%;
+            background: #172b4d;
+            color: white;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: #93c5fd;
+        }
+
+        .page-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 25px auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+        }
+
+        /* Report layout */
+        .report-container {
+            max-width: 900px;
+            width: 94%;
+            margin: 25px auto;
+            padding: 35px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .report-header h1 {
+            margin: 0 0 10px;
+            font-size: 30px;
+            color: #172b4d;
+        }
+
+        .report-header p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .report-section {
+            margin-bottom: 22px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .report-section h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            color: #172b4d;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .info-item {
+            min-width: 0;
+        }
+
+        .info-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .info-value {
+            display: block;
+            overflow-wrap: anywhere;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .prediction-box {
+            padding: 25px 15px;
+            text-align: center;
+            background: #eff6ff;
+            border-radius: 10px;
+        }
+
+        .prediction-label {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .predicted-score {
+            margin: 0 0 18px;
+            color: #1d4ed8;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .performance-level {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .advice {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            border-radius: 5px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .report-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .report-container {
+                padding: 20px 15px;
+            }
+
+            .report-header h1 {
+                font-size: 24px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .predicted-score {
+                font-size: 34px;
+            }
+        }
+
+        /* Important: hide navigation and buttons when printing */
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+
+            html,
+            body {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+                color: black !important;
+                font-size: 12px;
+            }
+
+            .navbar,
+            .nav-links,
+            .nav-logo,
+            .page-actions,
+            .no-print,
+            .back-link,
+            .print-button,
+            nav {
+                display: none !important;
+            }
+
+            .report-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+
+            .report-header h1 {
+                color: black !important;
+                font-size: 24px;
+            }
+
+            .report-section {
+                margin-bottom: 15px;
+                padding: 15px;
+                border: 1px solid #cccccc;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .prediction-box {
+                background: white !important;
+                border: 1px solid #cccccc;
+            }
+
+            .predicted-score {
+                color: black !important;
+            }
+
+            .advice {
+                background: white !important;
+                border: 1px solid #cccccc;
+                border-left: 3px solid #555555;
+            }
+
+            a {
+                color: black !important;
+                text-decoration: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation: visible on screen, hidden in print -->
+    <nav class="navbar no-print">
+        <div class="nav-logo">Student Performance</div>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('history') }}">History</a>
+        </div>
+    </nav>
+
+    <!-- Print and navigation buttons -->
+    <div class="page-actions no-print">
+        <button class="btn print-button" onclick="window.print()">
+            Print / Save as PDF
+        </button>
+
+        <a href="{{ url_for('history') }}" class="btn btn-secondary">
+            Back to History
+        </a>
+    </div>
+
+    <!-- Student Report -->
+    <main class="report-container">
+
+        <header class="report-header">
+            <h1>Student Performance Report</h1>
+            <p>Individual performance analysis</p>
+        </header>
+
+        <!-- Student Information -->
+        <section class="report-section">
+            <h2>Student Information</h2>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Student Name</span>
+                    <span class="info-value">
+                        {{ record.student_name }}
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Student ID</span>
+                    <span class="info-value">
+                        {{ record.student_id }}
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Report Date</span>
+                    <span class="info-value">
+                        {{ record.created_at }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Details -->
+        <section class="report-section">
+            <h2>Performance Details</h2>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Study Hours</span>
+                    <span class="info-value">
+                        {{ record.study_hours }} Hours
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Attendance</span>
+                    <span class="info-value">
+                        {{ record.attendance }}%
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Previous Marks</span>
+                    <span class="info-value">
+                        {{ record.previous_marks }}
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Assignments Completed</span>
+                    <span class="info-value">
+                        {{ record.assignments }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prediction Result -->
+        <section class="report-section">
+            <h2>Prediction Result</h2>
+
+            <div class="prediction-box">
+                <div class="prediction-label">Predicted Score</div>
+
+                <div class="predicted-score">
+                    {{ record.predicted_score }}%
+                </div>
+
+                <div>
+                    Performance Level:
+                    <span class="performance-level">
+                        {{ record.performance }}
+                    </span>
+                </div>
+            </div>
+
+            {% if record.advice %}
+            <div class="advice">
+                <strong>Recommendation:</strong>
+                {{ record.advice }}
+            </div>
+            {% endif %}
+        </section>
+
+        <footer class="report-footer">
+            Student Performance Prediction System
+            <br>
+            This report is generated from the recorded prediction data.
+        </footer>
+
+    </main>
+
+</body>
+</html>

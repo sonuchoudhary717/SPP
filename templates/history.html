@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Prediction History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            font-family: Arial, sans-serif;
+            color: #1e293b;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 16px 5%;
+            background: #172b4d;
+            color: white;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #93c5fd;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 94%;
+            margin: 30px auto;
+        }
+
+        .page-heading {
+            margin-bottom: 22px;
+        }
+
+        .page-heading p {
+            color: #64748b;
+        }
+
+        .toolbar,
+        .records-box {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .toolbar-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 17px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .btn-export {
+            background: #15803d;
+        }
+
+        .btn-export:hover {
+            background: #166534;
+        }
+
+        .btn-report {
+            padding: 8px 12px;
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .records-header h2 {
+            margin: 0;
+        }
+
+        .record-count {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .performance {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #e2e8f0;
+            font-size: 12px;
+        }
+
+        .empty-message {
+            padding: 30px 10px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 5px 0 25px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .toolbar-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 18px auto;
+            }
+
+            .toolbar,
+            .records-box {
+                padding: 15px;
+            }
+
+            .button-row .btn {
+                flex: 1 1 130px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+        }
+
+        @media print {
+            .navbar,
+            .toolbar,
+            .back-link,
+            .no-print,
+            .report-action {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            .container {
+                width: 100%;
+                margin: 0;
+            }
+
+            .records-box {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            table {
+                min-width: 0;
+                font-size: 10px;
+            }
+
+            th,
+            td {
+                padding: 6px;
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-logo">Student Performance</div>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('history') }}" class="active">History</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- Page Heading -->
+        <section class="page-heading">
+            <h1>Student Prediction History</h1>
+            <p>View and manage previous student performance predictions.</p>
+        </section>
+
+        <!-- Search and Export -->
+        <section class="toolbar">
+
+            <form action="{{ url_for('history') }}"
+                  method="GET">
+
+                <div class="toolbar-row">
+
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search student name or ID"
+                        value="{{ request.args.get('search', '') }}"
+                    >
+
+                    <select name="performance">
+                        <option value="">All Performance Levels</option>
+
+                        <option value="Excellent"
+                            {% if request.args.get('performance') == 'Excellent' %}selected{% endif %}>
+                            Excellent
+                        </option>
+
+                        <option value="Good"
+                            {% if request.args.get('performance') == 'Good' %}selected{% endif %}>
+                            Good
+                        </option>
+
+                        <option value="Average"
+                            {% if request.args.get('performance') == 'Average' %}selected{% endif %}>
+                            Average
+                        </option>
+
+                        <option value="Needs Improvement"
+                            {% if request.args.get('performance') == 'Needs Improvement' %}selected{% endif %}>
+                            Needs Improvement
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="btn">
+                        Search
+                    </button>
+
+                    <a href="{{ url_for('history') }}"
+                       class="btn btn-secondary">
+                        Reset
+                    </a>
+
+                    <a href="{{ url_for('export_csv') }}"
+                       class="btn btn-export">
+                        Export CSV
+                    </a>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="window.print()">
+                        Print History
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- Student Records -->
+        <section class="records-box">
+
+            <div class="records-header">
+                <h2>Student Records</h2>
+
+                <span class="record-count">
+                    Total Records: {{ records | length }}
+                </span>
+            </div>
+
+            {% if records %}
+
+                <div class="table-responsive">
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Record ID</th>
+                                <th>Student Name</th>
+                                <th>Student ID</th>
+                                <th>Study Hours</th>
+                                <th>Attendance</th>
+                                <th>Previous Marks</th>
+                                <th>Assignments</th>
+                                <th>Predicted Score</th>
+                                <th>Performance</th>
+                                <th>Date</th>
+                                <th class="no-print">Report</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for record in records %}
+
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.student_name }}</td>
+                                <td>{{ record.student_id }}</td>
+                                <td>{{ record.study_hours }}</td>
+                                <td>{{ record.attendance }}%</td>
+                                <td>{{ record.previous_marks }}</td>
+                                <td>{{ record.assignments }}</td>
+                                <td>{{ record.predicted_score }}%</td>
+                                <td>
+                                    <span class="performance">
+                                        {{ record.performance }}
+                                    </span>
+                                </td>
+                                <td>{{ record.created_at }}</td>
+
+                                <td class="no-print">
+                                    <a
+                                        href="{{ url_for('student_report', student_id=record.id) }}"
+                                        class="btn btn-report">
+                                        View Report
+                                    </a>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            {% else %}
+
+                <div class="empty-message">
+                    <h3>No Student Records Found</h3>
+                    <p>Try another search or reset the filters.</p>
+
+                    <a href="{{ url_for('home') }}" class="btn">
+                        Make Prediction
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </section>
+
+        <a href="{{ url_for('dashboard') }}" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
+</body>
+</html>

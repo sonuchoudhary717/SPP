@@ -1,0 +1,343 @@
+/* ===== NAVY BLUE HERO SECTION ===== */
+
+.hero {
+    background: linear-gradient(135deg, #0f172a, #1e40af, #2563eb);
+    color: #ffffff;
+    padding: 45px 25px;
+    margin: 25px auto;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+}
+
+.hero h1 {
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 18px 0;
+}
+
+.hero p {
+    color: #e2e8f0;
+    line-height: 1.8;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Project Badge */
+.hero .badge,
+.hero .tag {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #93c5fd;
+    border-radius: 30px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.10);
+    font-size: 13px;
+}
+
+/* ===== FORM CARD ===== */
+.form-card {
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.07);
+}
+
+.form-card h2 {
+    color: #0f172a;
+}
+
+/* ===== INPUTS ===== */
+input, select {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px;
+    background: #ffffff;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* ===== PREDICT BUTTON ===== */
+button[type="submit"] {
+    background: linear-gradient(135deg, #0f172a, #2563eb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+button[type="submit"]:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+    .hero {
+        padding: 30px 16px;
+        margin: 18px auto;
+        border-radius: 12px;
+    }
+
+    .hero h1 {
+        font-size: 27px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+}
+/* ===== PERFORMANCE DISTRIBUTION CHART ===== */
+
+.chart-box {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 25px;
+    margin: 25px 0;
+    background: #ffffff;
+    border: 1px solid #dbe3ee;
+    border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.06);
+    transition: box-shadow 0.3s ease;
+}
+
+.chart-box:hover {
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.10);
+}
+
+.chart-box h2 {
+    color: #111827;
+    font-size: 21px;
+    font-weight: 700;
+    text-align: left;
+    margin: 0 0 8px;
+}
+
+.chart-box p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0 0 22px;
+    line-height: 1.6;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 330px;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+@media (max-width: 600px) {
+    .chart-box {
+        padding: 16px;
+        margin: 18px 0;
+        border-radius: 12px;
+    }
+
+    .chart-box h2 {
+        font-size: 18px;
+    }
+
+    .chart-container {
+        height: 260px;
+    }
+}
+
+/* Prediction Result Card */
+.prediction-result {
+    width: 92%;
+    max-width: 760px;
+    box-sizing: border-box;
+    margin: 30px auto;
+    padding: 28px;
+    background: #fff;
+    color: #172b4d;
+    border: 1px solid #dbe3ef;
+    border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(23,43,77,.12);
+    text-align: center;
+}
+
+.prediction-result h2 {
+    margin: 0 0 8px;
+    color: #172b4d;
+    font-size: 26px;
+}
+
+.result-subtitle {
+    color: #64748b;
+    margin-bottom: 22px;
+}
+
+/* Student Details */
+.student-details {
+    padding: 12px 18px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.student-details p {
+    margin: 9px 0;
+    color: #111827;
+}
+
+.student-details strong {
+    color: #172b4d;
+}
+
+/* Score */
+.score-box {
+    margin: 20px 0;
+    padding: 22px;
+    background: linear-gradient(135deg, #172b4d, #2563eb);
+    border-radius: 12px;
+    color: #fff;
+}
+
+.score-box span {
+    font-size: 15px;
+    color: #e2e8f0;
+}
+
+.score-box h1 {
+    margin: 8px 0 0;
+    color: #fff;
+    font-size: 44px;
+}
+
+/* Performance */
+.performance-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.performance-box > span:first-child {
+    font-weight: bold;
+    color: #172b4d;
+}
+
+.performance-badge {
+    padding: 7px 13px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.excellent {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.good {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.average {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.needs-improvement {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Recommendation */
+.advice-box {
+    margin-top: 18px;
+    padding: 18px;
+    background: #f1f5f9;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.advice-box h3 {
+    margin: 0 0 8px;
+    color: #172b4d;
+}
+
+.advice-box p {
+    margin: 0;
+    color: #334155;
+    line-height: 1.7;
+}
+
+/* Button */
+.result-home {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 12px 20px;
+    background: #172b4d;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 7px;
+}
+
+.result-home:hover {
+    background: #2563eb;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .prediction-result {
+        width: calc(100% - 24px);
+        margin: 22px auto;
+        padding: 18px;
+    }
+
+    .prediction-result h2 {
+        font-size: 22px;
+    }
+
+    .score-box h1 {
+        font-size: 36px;
+    }
+
+    .performance-box {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* Print */
+@media print {
+    .navbar, .result-home, button {
+        display: none !important;
+    }
+
+    .prediction-result {
+        box-shadow: none;
+        border: 1px solid #bbb;
+        width: 100%;
+        max-width: 100%;
+    }
+}
